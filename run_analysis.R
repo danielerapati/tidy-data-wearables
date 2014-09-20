@@ -1,7 +1,5 @@
 library(stringr)
 library(dplyr)
-library(tidyr)
-
 
 # download the original zipped source file if not present
 zipped_file <- "UCI_HAR_Dataset.zip"
@@ -20,7 +18,7 @@ features <- read.table("UCI HAR Dataset/features.txt", col.names=c("id","name"))
 # (everything to lower case, remove all non alphabetic characters)
 X_col_names <- tolower(as.vector(features$name))
 X_col_names <- str_replace_all(X_col_names,"-","")
-X_col_names <- str_replace_all(X_col_names,",","")
+X_col_names <- str_replace_all(X_col_names,",","to")
 X_col_names <- str_replace_all(X_col_names,"\\(","")
 X_col_names <- str_replace_all(X_col_names,"\\)","")
 
@@ -42,19 +40,28 @@ complete_data <- tbl_df(rbind(test, train))
 
 
 # extract only the measurements on the mean and standard deviation for each measurement
-# NOTE: we can use dplyr select() with the clause contains
-
+# we use dplyr select() with the clause matches and a regular expression
+# regular expression "^[ft].*(mean|std)[xyz]?$" in human words:
+# all variable names 
+#       beginning with "f" or "t" 
+#       and ending with "mean" or "std" possibly followed by one of "x", "y" or "z"
+mean_std_data <- select(complete_data, activityid, subjectid, matches("^[ft].*(mean|std)[xyz]?$"))
 
 # attach descriptive activity names to name the activities in the data set
 # enrich the dataset with activity and features complete information
 # read in the activity dataset
-activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names=c("id","name"))
+activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names=c("id","activity"))
 # merge
 
 
 # create a second, independent tidy data set with the average of each variable for each activity and each subject
+avg_by_activity_and_subject <- mean_std_data %>%
+    gather(measure, value, -(activityid:subjectid)) %>%
+    group_by(activityid, subjectid, measure) %>%
+    summarize(avg = mean(value)) %>%
+    spread(measure, avg)
 
 # save the summary tidy dataset to disk
 final_output_file = "summary_by_activity_and_subject.txt"
-# write.table( , file=final_output_file, row.names=FALSE)
+# write.table(avg_by_activity_and_subject , file=final_output_file, row.names=FALSE)
 
