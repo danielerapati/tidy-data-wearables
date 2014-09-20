@@ -22,6 +22,7 @@ X_col_names <- str_replace_all(X_col_names,"-","")
 X_col_names <- str_replace_all(X_col_names,",","to")
 X_col_names <- str_replace_all(X_col_names,"\\(","")
 X_col_names <- str_replace_all(X_col_names,"\\)","")
+X_col_names <- str_replace_all(X_col_names,"bodybody","body")
 
 # load train and test datasets
 # (Appropriately label the data sets with descriptive variable names using the features dataset)
@@ -51,18 +52,20 @@ mean_std_data <- select(complete_data, activityid, subjectid, matches("^[ft].*(m
 # attach descriptive activity names to name the activities in the data set
 # enrich the dataset with activity and features complete information
 # read in the activity dataset
-activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names=c("id","activity"))
-# merge
-
+activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names=c("activityid","activity"))
+# merge, remove the acrivityid column and overwrite mean_std_data
+mean_std_data <- inner_join(activities, mean_std_data, by= "activityid") %>%
+                select(-activityid) %>%
+                tbl_df
 
 # create a second, independent tidy data set with the average of each variable for each activity and each subject
 avg_by_activity_and_subject <- mean_std_data %>%
-    gather(measure, value, -(activityid:subjectid)) %>%
-    group_by(activityid, subjectid, measure) %>%
+    gather(measure, value, -(activity:subjectid)) %>%
+    group_by(activity, subjectid, measure) %>%
     summarize(avg = mean(value)) %>%
     spread(measure, avg)
 
 # save the summary tidy dataset to disk
 final_output_file = "summary_by_activity_and_subject.txt"
-# write.table(avg_by_activity_and_subject , file=final_output_file, row.names=FALSE)
+write.table(avg_by_activity_and_subject , file=final_output_file, row.names=FALSE)
 
