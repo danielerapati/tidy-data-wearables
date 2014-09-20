@@ -1,5 +1,6 @@
 library(stringr)
 library(dplyr)
+library(tidyr)
 
 # download the original zipped source file if not present
 zipped_file <- "UCI_HAR_Dataset.zip"
@@ -42,8 +43,8 @@ complete_data <- tbl_df(rbind(test, train))
 # extract only the measurements on the mean and standard deviation for each measurement
 # we use dplyr select() with the clause matches and a regular expression
 # regular expression "^[ft].*(mean|std)[xyz]?$" in human words:
-# all variable names 
-#       beginning with "f" or "t" 
+# all variable names
+#       beginning with "f" or "t"
 #       and ending with "mean" or "std" possibly followed by one of "x", "y" or "z"
 mean_std_data <- select(complete_data, activityid, subjectid, matches("^[ft].*(mean|std)[xyz]?$"))
 
