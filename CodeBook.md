@@ -1,5 +1,7 @@
 UCI HAR dataset averaged over activity and subject, including only mean and
 standard deviation measurements.
+Original data can be found at
+[link](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).  
 
 __activity__: String, human readable description of the activity under measure  
 __subjectid__: Int, unique identifier of the experiment subject  
