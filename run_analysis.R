@@ -53,7 +53,7 @@ mean_std_data <- select(complete_data, activityid, subjectid, matches("^[ft].*(m
 # enrich the dataset with activity and features complete information
 # read in the activity dataset
 activities <- read.table("UCI HAR Dataset/activity_labels.txt", col.names=c("activityid","activity"))
-# merge, remove the acrivityid column and overwrite mean_std_data
+# merge, remove the activityid column and overwrite mean_std_data
 mean_std_data <- inner_join(activities, mean_std_data, by= "activityid") %>%
                 select(-activityid) %>%
                 tbl_df

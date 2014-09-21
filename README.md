@@ -66,8 +66,8 @@ average just taken.
 The dataset thus obtained is saved to disk.  
 
 The final dataset is *tidy* in the sense that:
-1. each variable forms a column
-2. each row forms an observation
-3. the dataset contains only one kind of observation and only one table
+1. each variable forms a column  
+2. each row forms an observation  
+3. the dataset contains only one kind of observation and only one table  
 
 
