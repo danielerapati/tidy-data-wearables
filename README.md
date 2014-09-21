@@ -3,6 +3,8 @@ tidy-data-wearables
 
 Course project for "Getting and Cleaning Data" https://class.coursera.org/getdata-007/
 
+## Outline ##
+
 All the work is performed in *run_analysis.R*.  
 
 The original data is downloaded (if not already present) and unzipped in the
@@ -70,4 +72,10 @@ The final dataset is *tidy* in the sense that:
 - each row forms an observation  
 - the dataset contains only one kind of observation and only one table  
 
+## References ##
+
+Hadley Wickham, *Tidy Data*. http://vita.had.co.nz/papers/tidy-data.pdf   
+Hadley Wickham, *stringr R package*. http://cran.r-project.org/web/packages/stringr/index.html   
+Hadley Wickham, *dplyr R package*. https://github.com/hadley/dplyr   
+Hadley Wickham, *tidyr R package*. https://github.com/hadley/tidyr   
 
